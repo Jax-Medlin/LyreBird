@@ -5,6 +5,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Login</title>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 <div align=center>
@@ -15,7 +16,7 @@
 <tr><td>Enter Username:</td><td><input type=text name=username></td></tr>
 <tr><td>Enter Password:</td><td><input type=password name=password></td></tr>
 <tr><td><input type=submit value=Login></td><td><input type="button" value="Register" onclick="window.location='Register.jsp'" ></td></tr>
-<tr><font color = red>${errormessage}<br></tr>
+<tr><td colspan="2" class="error-message">${errormessage}<br></td></tr>
 </table>
 </form>
 </body>

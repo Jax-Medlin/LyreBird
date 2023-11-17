@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e6f2ff; /* Light blue background */
+    color: #333;
+    text-align: center;
+}
+
+h1 {
+    color: #003366; /* Dark blue */
+}
+
+table {
+    margin: auto;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 8px;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input[type=submit], input[type=button] {
+    background-color: #005cbf; /* Medium blue */
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+input[type=submit]:hover, input[type=button]:hover {
+    background-color: #004080; /* Darker blue */
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+}
+
+/* Dashboard Specific Styles */
+.dashboard-header {
+    color: #003366; /* Dark blue, similar to h1 */
+    margin-bottom: 20px;
+}
+
+.dashboard-table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-table th {
+    background-color: #005cbf; /* Medium blue */
+    color: white;
+    padding: 12px;
+}
+
+.dashboard-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.dashboard-table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Zebra striping for rows */
+}
+
+.dashboard-table tr:hover {
+    background-color: #d1e0ff; /* Lighter blue for hover */
+}
+
+/* Responsive Table for Smaller Screens (Ultra-fancy) */
+@media (max-width: 600px) {
+    .dashboard-table, .dashboard-table thead, .dashboard-table tbody, .dashboard-table th, .dashboard-table td, .dashboard-table tr {
+        display: block;
+    }
+
+    .dashboard-table th, .dashboard-table td {
+        padding: 10px;
+    }
+}
