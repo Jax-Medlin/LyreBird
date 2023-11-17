@@ -7,7 +7,7 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="style.css"> <!-- Ensure this path is correct -->
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <div class="content"> <!-- Added for potential additional styling and better structure -->
