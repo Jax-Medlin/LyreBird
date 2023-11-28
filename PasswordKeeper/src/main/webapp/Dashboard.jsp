@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="content"> <!-- Added for potential additional styling and better structure -->
-        <h2 class="dashboard-header">Dashboard</h2> <!-- Dashboard Header -->
+        <h2 class="dashboard-header"><h2>Dashboard</h2><h2><a href ="Insert.jsp">Insert</a></h2></h2> <!-- Dashboard Header -->
         <form method="post" name="form">
             <table class="dashboard-table"> <!-- Removed the 'border' attribute to rely on CSS for styling -->
                 <tr>
@@ -28,6 +28,7 @@
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     con = DriverManager.getConnection(url,usrname,password);
                     String username= (String)request.getSession().getAttribute("username");
+                    request.getSession().setAttribute("username", username);
                     PreparedStatement ps=con.prepareStatement("select website, wusername, wpassword from loginInfo where username=?");
                     ps.setString(1, username);
                     ResultSet rs= ps.executeQuery();

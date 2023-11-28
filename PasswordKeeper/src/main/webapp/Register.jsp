@@ -15,11 +15,11 @@
         <table>
             <tr>
                 <td>Register Username:</td>
-                <td><input type="text" name="username" class="login-input"></td> <!-- Added class for styling -->
+                <td><input type="text" name="username" required="required" class="login-input"></td> <!-- Added class for styling -->
             </tr>
             <tr>
                 <td>Register Password:</td>
-                <td><input type="password" name="password" class="login-input"></td> <!-- Added class for styling -->
+                <td><input type="password" name="password" required="required" class="login-input"></td> <!-- Added class for styling -->
             </tr>
             <tr>
                 <td><input type="submit" value="Register" class="login-input"></td> <!-- Added class for styling -->
