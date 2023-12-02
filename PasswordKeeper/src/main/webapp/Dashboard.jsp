@@ -12,7 +12,7 @@
 <body>
     <div class="content"> <!-- Added for potential additional styling and better structure -->
         <h2 class="dashboard-header"><h2>Dashboard</h2><h2><a href ="Insert.jsp">Insert</a></h2></h2> <!-- Dashboard Header -->
-        <form method="post" name="form">
+        <form method="Post" action="DeleteServlet">
             <table class="dashboard-table"> <!-- Removed the 'border' attribute to rely on CSS for styling -->
                 <tr>
                     <th>Website</th>
@@ -20,6 +20,9 @@
                     <th>Password</th>
                 </tr>
                 <% 
+                String errormessage = "";
+                request.removeAttribute(errormessage);
+            	request.getSession().setAttribute("errormessage", errormessage);
                 Connection con = null;
             		String url = "jdbc:mysql://ec2-3-14-254-207.us-east-2.compute.amazonaws.com:3306/PKDB?useSSL=false";
                 String usrname = "group_remote";
@@ -28,18 +31,19 @@
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     con = DriverManager.getConnection(url,usrname,password);
                     String username= (String)request.getSession().getAttribute("username");
-                    request.getSession().setAttribute("username", username);
-                    PreparedStatement ps=con.prepareStatement("select website, wusername, wpassword from loginInfo where username=?");
+                    PreparedStatement ps=con.prepareStatement("select id, website, wusername, wpassword from loginInfo where username=?");
                     ps.setString(1, username);
                     ResultSet rs= ps.executeQuery();
                 %>
                     <% 
                     while(rs.next()){
-                    %>
+                   %>
                         <tr>
-                            <td><%=rs.getString(1)%></td>
+                        <% request.getSession().setAttribute("id", rs.getString(1)); %>
                             <td><%=rs.getString(2)%></td>
                             <td><%=rs.getString(3)%></td>
+                            <td><%=rs.getString(4)%></td>
+                            <td><input type="submit" value="Delete"></td>
                         </tr>
                     <% 
                     }

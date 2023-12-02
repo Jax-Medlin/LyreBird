@@ -45,10 +45,10 @@ public class LoginServlet extends HttpServlet {
 			ResultSet rs= ps.executeQuery();
 			String errormessage = "";
 			request.removeAttribute(errormessage);
+			request.setAttribute("errormessage", errormessage);
 			if(rs.next()) {
 				request.getSession().setAttribute("username", username);
-				RequestDispatcher rd=request.getRequestDispatcher("Dashboard.jsp");
-				rd.forward(request, response);
+				response.sendRedirect(request.getContextPath() + "/Dashboard.jsp");
 			}else {
 				errormessage = "Username or Password are not correct!";
 				request.setAttribute("errormessage", errormessage);
