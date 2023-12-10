@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\PasswordKeeper",
+    "\\PasswordKeeper\\src",
+    "\\PasswordKeeper\\src\\main",
+    "\\PasswordKeeper\\src\\main\\java"
   ],
-  "SelectedNode": "\\E:\\testtrepo",
+  "SelectedNode": "\\PasswordKeeper\\src\\main\\java\\DeleteServlet.java",
   "PreviewInSolutionExplorer": false
 }

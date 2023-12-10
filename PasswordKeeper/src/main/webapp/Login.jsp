@@ -21,8 +21,8 @@
 %>
 <form action=LoginServlet method=post>
 <table>
-<tr><td>Enter Username:</td><td><input type=text name=username></td></tr>
-<tr><td>Enter Password:</td><td><input type=password name=password></td></tr>
+<tr><td>Enter Username:</td><td><input type=text name=username required="required"></td></tr>
+<tr><td>Enter Password:</td><td><input type=password name=password required="required"></td></tr>
 <tr><td><input type=submit value=Login></td><td><input type="button" value="Register" onclick="window.location='Register.jsp'" ></td></tr>
 <tr><td colspan="2" class="error-message">${errormessage}<br></td></tr>
 </table>
