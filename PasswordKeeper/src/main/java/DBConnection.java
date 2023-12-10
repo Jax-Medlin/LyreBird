@@ -3,7 +3,7 @@ import java.sql.DriverManager;
 
 public class DBConnection {
    static Connection connection = null;
-   static String url = "jdbc:mysql://ec2-3-14-254-207.us-east-2.compute.amazonaws.com:3306/PKDB?useSSL=false";
+   static String url = "jdbc:mysql://ec2-3-14-254-207.us-east-2.compute.amazonaws.com:3306/PKDB?allowPublicKeyRetrieval=true&useSSL=false";
 	static String usrname = "group_remote";
 	static String pass = "group";
    static void getDBConnection() {

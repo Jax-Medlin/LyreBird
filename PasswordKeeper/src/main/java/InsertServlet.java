@@ -50,6 +50,10 @@ public class InsertServlet extends HttpServlet {
 			String errormessage = "";
 			request.removeAttribute(errormessage);
 			String username = (String)request.getSession().getAttribute("username");
+			 if(username == null){
+             	RequestDispatcher rd=getServletContext().getRequestDispatcher("/Login.jsp");
+ 				rd.forward(request, response);
+             }
 			System.out.println("username");
 				PreparedStatement preparedstmt=con.prepareStatement("insert into loginInfo (username, website, wusername, wpassword) values (?,?,?,?)");
 				preparedstmt.setString(1, username);

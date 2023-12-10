@@ -8,9 +8,17 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+
 <div align=center>
 <h1>Login</h1>
 </div>
+<%
+    // Clearing the session attribute "username"
+    String username = (String)request.getSession().getAttribute("username");
+    if (username != null) {
+        request.getSession().removeAttribute("username");
+    }
+%>
 <form action=LoginServlet method=post>
 <table>
 <tr><td>Enter Username:</td><td><input type=text name=username></td></tr>
