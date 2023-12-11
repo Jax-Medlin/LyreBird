@@ -20,6 +20,7 @@
                     <th>Password</th>
                 </tr>
                 <% 
+                request.getSession().removeAttribute("id");
                 String errormessage = "";
                 request.removeAttribute(errormessage);
             	request.getSession().setAttribute("errormessage", errormessage);
@@ -43,11 +44,10 @@
                     while(rs.next()){
                    %>
                         <tr>
-                        <% request.getSession().setAttribute("id", rs.getString(1)); %>
                             <td><%=rs.getString(2)%></td>
                             <td><%=rs.getString(3)%></td>
                             <td><%=rs.getString(4)%></td>
-                            <td><input type="submit" value="Delete"></td>
+                            <td><input class="dashboard-deletetype" type="submit" name="id" value=<%=rs.getString(1)%>/></td>
                         </tr>
                     <% 
                     }

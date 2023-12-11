@@ -45,7 +45,8 @@ public class DeleteServlet extends HttpServlet {
 			String errormessage = "";
 			request.removeAttribute(errormessage);
 			String username= (String)request.getSession().getAttribute("username");
-			String id= (String)request.getSession().getAttribute("id");
+			String id= (String)request.getParameter("id");
+			id = id.substring(0, id.length() - 1);  
 			System.out.print(id);
 			System.out.print("DELETINGGG");
 				PreparedStatement preparedstmt=con.prepareStatement("delete from loginInfo where id= ?");
