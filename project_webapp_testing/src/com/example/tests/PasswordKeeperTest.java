@@ -160,6 +160,14 @@ public class PasswordKeeperTest {
     Thread.sleep(2000);
     driver.findElement(By.xpath("//tbody/tr[4]/td[1]/input[1]")).click();
     Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[1]/td[2]/input[1]")).sendKeys(website);
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[2]/td[2]/input[1]")).sendKeys(username);
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[3]/td[2]/input[1]")).sendKeys(password);
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[4]/td[1]/input[1]")).click();
+    Thread.sleep(2000);
     String expected = "Data has been added!<br>";
     String result = driver.findElement(By.xpath("//tbody/tr[5]/td[1]")).getAttribute("innerHTML");
     Assert.assertEquals(expected, result);
@@ -182,7 +190,40 @@ public class PasswordKeeperTest {
     assertNotEquals(expected, result);
   }
   
+  @Test
+  public void testLoginEmpty() throws Exception {
+    driver.get("http://ec2-3-14-254-207.us-east-2.compute.amazonaws.com:8080/PasswordKeeper/Login.jsp");
+    driver.findElement(By.xpath("//tbody/tr[1]/td[2]/input[1]")).sendKeys("");
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[2]/td[2]/input[1]")).sendKeys("");
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[3]/td[1]/input[1]")).click();
+    Thread.sleep(2000);
+    String expected = "Username or Password are not correct!<br>";
+    String result = driver.findElement(By.xpath("//tbody/tr[4]/td[1]")).getAttribute("innerHTML");
+    assertNotEquals(expected, result);
+  }
+  //We fixed a bug where it would delete the first row when clicking any delete button
+  @Test
+  public void TestDeletionof2ndRow() throws Exception {
 
+    driver.get("http://ec2-3-14-254-207.us-east-2.compute.amazonaws.com:8080/PasswordKeeper/Login.jsp");
+    driver.findElement(By.xpath("//tbody/tr[1]/td[2]/input[1]")).sendKeys("group");
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[2]/td[2]/input[1]")).sendKeys("group");
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[3]/td[1]/input[1]")).click();
+    Thread.sleep(2000);
+    String expected = driver.findElement(By.xpath("//tbody/tr/td[1]")).getAttribute("innerHTML");
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//body[1]/div[1]/table[1]/tbody[1]/tr[3]/td[4]/form[1]/input[2]")).click();
+    Thread.sleep(2000);
+    String result = driver.findElement(By.xpath("//tbody/tr/td[1]")).getAttribute("innerHTML");
+    Assert.assertEquals(expected, result);
+  }
+  
+  
+  
   
  
 @After
