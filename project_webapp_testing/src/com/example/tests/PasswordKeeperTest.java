@@ -32,6 +32,16 @@ public class PasswordKeeperTest {
 
 	  }
   
+//Helper method for login
+  private void login(String username, String password) throws InterruptedException {
+      driver.get("http://ec2-3-14-254-207.us-east-2.compute.amazonaws.com:8080/PasswordKeeper/Login.jsp");
+      driver.findElement(By.name("username")).sendKeys(username);
+      driver.findElement(By.name("password")).sendKeys(password);
+      driver.findElement(By.xpath("//input[@type='submit']")).click();
+      Thread.sleep(2000);
+  }
+  
+  
   @Before
   public void setUp() throws Exception {
       System.setProperty("webdriver.chrome.driver", //
@@ -41,6 +51,65 @@ public class PasswordKeeperTest {
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
 
+//Test to navigate to the Insert page
+  @Test
+  public void testNavigateToInsertPage() throws Exception {
+      login("group", "group");
+      driver.findElement(By.xpath("//a[contains(text(),'Insert')]")).click();
+      Thread.sleep(2000);
+      String expected = "Register";
+      String result = driver.findElement(By.xpath("//h1[contains(text(),'Register')]")).getAttribute("innerHTML");
+      Assert.assertEquals(expected, result);
+  }
+
+  // Test to verify logout functionality
+  @Test
+  public void testLogout() throws Exception {
+      login("group", "group");
+      driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
+      Thread.sleep(2000);
+      String expected = "Login";
+      String result = driver.findElement(By.xpath("//h1[contains(text(),'Login')]")).getAttribute("innerHTML");
+      Assert.assertEquals(expected, result);
+  }
+
+  // Test to insert invalid data and check for error message
+  @Test
+  public void testInsertInvalidData() throws Exception {
+	  String website  = "";
+	  String username = "";
+	  String password = "";
+    driver.get("http://ec2-3-14-254-207.us-east-2.compute.amazonaws.com:8080/PasswordKeeper/Login.jsp");
+    driver.findElement(By.xpath("//tbody/tr[1]/td[2]/input[1]")).sendKeys("group");
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[2]/td[2]/input[1]")).sendKeys("group");
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[3]/td[1]/input[1]")).click();
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//a[contains(text(),'Insert')]")).click();
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[1]/td[2]/input[1]")).sendKeys(website);
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[2]/td[2]/input[1]")).sendKeys(username);
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[3]/td[2]/input[1]")).sendKeys(password);
+    Thread.sleep(2000);
+    driver.findElement(By.xpath("//tbody/tr[4]/td[1]/input[1]")).click();
+    Thread.sleep(2000);
+    String expected = "Data has been added!<br>";
+    String result = driver.findElement(By.xpath("//tbody/tr[5]/td[1]")).getAttribute("innerHTML");
+    assertNotEquals(expected, result);
+  }
+
+  // Test to view data on the dashboard
+  @Test
+  public void testViewDashboardData() throws Exception {
+      login("group", "group");
+      boolean isDataPresent = driver.findElement(By.xpath("//tbody/tr[2]/td[1]")).isDisplayed(); // Adjust selector as needed
+      Assert.assertTrue(isDataPresent);
+  }
+  
+  
   @Test
   public void testLoginSuccess() throws Exception {
     driver.get("http://ec2-3-14-254-207.us-east-2.compute.amazonaws.com:8080/PasswordKeeper/Login.jsp");
@@ -107,7 +176,7 @@ public class PasswordKeeperTest {
     Thread.sleep(2000);
     String expected = driver.findElement(By.xpath("//tbody/tr/td[1]")).getAttribute("innerHTML");
     Thread.sleep(2000);
-    driver.findElement(By.xpath("//tbody/tr[2]/td[4]/input[1]")).click();
+    driver.findElement(By.xpath("//body[1]/div[1]/table[1]/tbody[1]/tr[2]/td[4]/form[1]/input[2]")).click();
     Thread.sleep(2000);
     String result = driver.findElement(By.xpath("//tbody/tr/td[1]")).getAttribute("innerHTML");
     assertNotEquals(expected, result);

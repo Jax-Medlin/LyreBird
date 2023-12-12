@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 			ps.setString(2, password);
 			ResultSet rs= ps.executeQuery();
 			String errormessage = "";
-			request.removeAttribute(errormessage);
+			request.getSession().removeAttribute("errormessage");
 			request.setAttribute("errormessage", errormessage);
 			if(rs.next()) {
 				request.getSession().setAttribute("username", username);

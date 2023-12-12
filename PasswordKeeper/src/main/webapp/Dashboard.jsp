@@ -20,11 +20,12 @@
                 <th>Delete</th>
             </tr>
             <% 
+            request.getSession().removeAttribute("errormessage");
             Connection con = null;
             try {
                 // Establish connection
                 con = utils.DBConnection.getDBConnection();
-
+				
                 // Get username
                 String username = (String)request.getSession().getAttribute("username");
                 if(username == null){
