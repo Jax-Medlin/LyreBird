@@ -23,8 +23,8 @@ public class InsertServlet extends HttpServlet {
         Connection con = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            DBConnection.getDBConnection();
-            con = DBConnection.connection;
+            utils.DBConnection.getDBConnection();
+            con = utils.DBConnection.getDBConnection();
 
             String website = request.getParameter("website");
             String wusername = request.getParameter("wusername");
