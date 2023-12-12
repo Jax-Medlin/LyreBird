@@ -1,18 +1,7 @@
-
-
 import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -22,60 +11,64 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class LoginServlet
- */
 @WebServlet("/InsertServlet")
 public class InsertServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    private static final long serialVersionUID = 1L;
+
     public InsertServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			PrintWriter out=response.getWriter();
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			DBConnection.getDBConnection();
-			Connection con= DBConnection.connection;
-			String website=request.getParameter("website");
-			String wusername=request.getParameter("wusername");
-			String wpassword = request.getParameter("wpassword");
-			String errormessage = "";
-			request.removeAttribute(errormessage);
-			String username = (String)request.getSession().getAttribute("username");
-			 if(username == null){
-             	RequestDispatcher rd=getServletContext().getRequestDispatcher("/Login.jsp");
- 				rd.forward(request, response);
-             }
-			System.out.println("username");
-				PreparedStatement preparedstmt=con.prepareStatement("insert into loginInfo (username, website, wusername, wpassword) values (?,?,?,?)");
-				preparedstmt.setString(1, username);
-				preparedstmt.setString(2, website);
-				preparedstmt.setString(3, wusername);
-				preparedstmt.setString(4, wpassword);
-				preparedstmt.execute();
-				con.close();
-				errormessage = "Data has been added!";
-				request.getSession().setAttribute("errormessage", errormessage);
-				RequestDispatcher rd=request.getRequestDispatcher("Insert.jsp");
-				rd.forward(request, response);
-			
-			
-			
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		};
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Connection con = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            DBConnection.getDBConnection();
+            con = DBConnection.connection;
 
+            String website = request.getParameter("website");
+            String wusername = request.getParameter("wusername");
+            String wpassword = request.getParameter("wpassword");
+            String username = (String) request.getSession().getAttribute("username");
+
+            // Debugging statement --delete me!
+            System.out.println("Inserting: Website - " + website + ", Username - " + wusername + ", Password - " + wpassword);
+
+            if (username == null) {
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/Login.jsp");
+                rd.forward(request, response);
+                return;
+            }
+
+            if (website.isEmpty() || wusername.isEmpty() || wpassword.isEmpty()) {
+                // Set error message and forward back to the form
+                request.setAttribute("errormessage", "Please fill all fields.");
+                RequestDispatcher rd = request.getRequestDispatcher("Insert.jsp");
+                rd.forward(request, response);
+                return;
+            }
+
+            PreparedStatement preparedstmt = con.prepareStatement("INSERT INTO loginInfo (username, website, wusername, wpassword) VALUES (?, ?, ?, ?)");
+            preparedstmt.setString(1, username);
+            preparedstmt.setString(2, website);
+            preparedstmt.setString(3, wusername);
+            preparedstmt.setString(4, wpassword);
+            preparedstmt.execute();
+
+            request.getSession().setAttribute("errormessage", "Data has been added!");
+            response.sendRedirect("Insert.jsp");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("errormessage", "Error occurred: " + e.getMessage());
+            response.sendRedirect("Insert.jsp");
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
