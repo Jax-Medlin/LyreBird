@@ -32,7 +32,7 @@ public class InsertServlet extends HttpServlet {
             String username = (String) request.getSession().getAttribute("username");
 
             // Debugging statement --delete me!
-            System.out.println("Inserting: Website - " + website + ", Username - " + wusername + ", Password - " + wpassword);
+            // System.out.println("Inserting: Website - " + website + ", Username - " + wusername + ", Password - " + wpassword);
 
             if (username == null) {
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/Login.jsp");
