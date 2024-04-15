@@ -52,6 +52,17 @@ input[type=submit]:hover, input[type=button]:hover {
     margin-bottom: 20px;
 }
 
+input[type=submit].dashboard-delete{
+	color: red !important;
+	background-color: red !important;
+	font-size:0 !important;
+	padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
 .dashboard-table {
     width: 90%;
     margin: 20px auto;

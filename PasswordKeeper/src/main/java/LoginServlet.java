@@ -35,8 +35,8 @@ public class LoginServlet extends HttpServlet {
 		try {
 			PrintWriter out=response.getWriter();
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			DBConnection.getDBConnection();
-			Connection con= DBConnection.connection;
+			utils.DBConnection.getDBConnection();
+			Connection con= utils.DBConnection.getDBConnection();
 			String username=request.getParameter("username");
 			String password = request.getParameter("password");
 			PreparedStatement ps=con.prepareStatement("select username from loginDB where username=? and password=?");
@@ -44,11 +44,11 @@ public class LoginServlet extends HttpServlet {
 			ps.setString(2, password);
 			ResultSet rs= ps.executeQuery();
 			String errormessage = "";
-			request.removeAttribute(errormessage);
+			request.getSession().removeAttribute("errormessage");
+			request.setAttribute("errormessage", errormessage);
 			if(rs.next()) {
 				request.getSession().setAttribute("username", username);
-				RequestDispatcher rd=request.getRequestDispatcher("Dashboard.jsp");
-				rd.forward(request, response);
+				response.sendRedirect(request.getContextPath() + "/Dashboard.jsp");
 			}else {
 				errormessage = "Username or Password are not correct!";
 				request.setAttribute("errormessage", errormessage);

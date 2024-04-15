@@ -1,7 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*" %>
-<%@ page import="java.sql.PreparedStatement" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,47 +8,66 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <div class="content"> <!-- Added for potential additional styling and better structure -->
-        <h2 class="dashboard-header"><h2>Dashboard</h2><h2><a href ="Insert.jsp">Insert</a></h2></h2> <!-- Dashboard Header -->
-        <form method="post" name="form">
-            <table class="dashboard-table"> <!-- Removed the 'border' attribute to rely on CSS for styling -->
-                <tr>
-                    <th>Website</th>
-                    <th>Username</th>
-                    <th>Password</th>
-                </tr>
-                <% 
-                Connection con = null;
-            		String url = "jdbc:mysql://ec2-3-14-254-207.us-east-2.compute.amazonaws.com:3306/PKDB?useSSL=false";
-                String usrname = "group_remote";
-                String password = "group";
-                try {
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    con = DriverManager.getConnection(url,usrname,password);
-                    String username= (String)request.getSession().getAttribute("username");
-                    request.getSession().setAttribute("username", username);
-                    PreparedStatement ps=con.prepareStatement("select website, wusername, wpassword from loginInfo where username=?");
-                    ps.setString(1, username);
-                    ResultSet rs= ps.executeQuery();
-                %>
-                    <% 
-                    while(rs.next()){
-                    %>
-                        <tr>
-                            <td><%=rs.getString(1)%></td>
-                            <td><%=rs.getString(2)%></td>
-                            <td><%=rs.getString(3)%></td>
-                        </tr>
-                    <% 
-                    }
-                    %>
-                <% 
-                } catch(Exception e) {
-                    e.printStackTrace();
+    <div class="content">
+        <h2 class="dashboard-header">Dashboard</h2>
+        <h2><a href="Insert.jsp">Insert</a></h2>
+        <h2><a href="Login.jsp">Logout</a></h2>
+        <table class="dashboard-table">
+            <tr>
+                <th>Website</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Delete</th>
+            </tr>
+            <% 
+            request.getSession().removeAttribute("errormessage");
+            Connection con = null;
+            try {
+                // Establish connection
+                con = utils.DBConnection.getDBConnection();
+				
+                // Get username
+                String username = (String)request.getSession().getAttribute("username");
+                if(username == null){
+                    // Redirect to login page if not logged in
+                    response.sendRedirect("Login.jsp");
+                    return;
                 }
-                %>
-            </table>
-        </form>
+
+                // Prepare SQL query to GET DAT user data
+                PreparedStatement ps = con.prepareStatement("SELECT id, website, wusername, wpassword FROM loginInfo WHERE username=?");
+                ps.setString(1, username);
+                ResultSet rs = ps.executeQuery();
+
+                // Iterate over each row in the result set
+                while(rs.next()) {
+            %>
+                    <tr>
+                        <td><%= rs.getString("website") %></td>
+                        <td><%= rs.getString("wusername") %></td>
+                        <td><%= rs.getString("wpassword") %></td>
+                        <td>
+                            <!-- Form for delete button -->
+                            <form method="post" action="DeleteServlet">
+                                <!-- Hidden field to hold the id of the entry -->
+                                <input type="hidden" name="id" value="<%= rs.getInt("id") %>"/>
+                                <!-- User-friendly delete button -->
+                                <input type="submit" value="Delete"/>
+                            </form>
+                        </td>
+                    </tr>
+            <% 
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            } finally {
+                // Close the database connection
+                if (con != null) {
+                    try { con.close(); } catch (SQLException e) { e.printStackTrace(); }
+                }
+            }
+            %>
+        </table>
     </div>
 </body>
 </html>
